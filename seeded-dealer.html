@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+</head>
+<body>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/seedrandom/2.4.0/seedrandom.min.js">
+    </script>
+    <script>
+var values = [5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
+var suits = ['S', 'C', 'D', 'H'];
+
+var cards = [];
+var hands = [];
+var kitty = [];
+
+function shuffle(array) {
+  var i = 0
+    , j = 0
+    , temp = null
+
+  for (i = array.length - 1; i > 0; i -= 1) {
+    j = Math.floor(Math.random() * (i + 1))
+    temp = array[i]
+    array[i] = array[j]
+    array[j] = temp
+  }
+}
+
+function card(value, suit) {
+    return {
+        value: value,
+        suit: suit,
+        repr: function() {
+            if (this.suit === 'X') return 'X';
+            var display_value = this.value;
+            if (this.value === 11) display_value = 'J';
+            if (this.value === 12) display_value = 'Q';
+            if (this.value === 13) display_value = 'K';
+            if (this.value === 14) display_value = 'A';
+            return display_value + this.suit;
+        },
+        sorting_value: function() {
+            if (this.suit === 'X') {
+                return 1000;
+            } else {
+                return suits.indexOf(this.suit) * 100 + this.value;
+            }
+        },
+    };
+}
+
+function dealHand() {
+    var seed = document.getElementById('seed').value;
+    var option = document.getElementById('player-option');
+    var player_id = option.options[option.selectedIndex].value;
+    if (!seed || !player_id) return;
+
+    document.getElementById('cards').innerHTML = '';
+
+    // reset the hands, the cards, the kitty
+    hands = [];
+    kitty = [];
+    cards = [];
+    values.forEach((val) => {
+        suits.forEach((suit) => {
+            cards.push(card(val, suit));
+        })
+    });
+    cards.push(card(4, 'D'));
+    cards.push(card(4, 'H'));
+    cards.push(card(0, 'X'));
+
+    Math.seedrandom(seed);
+    shuffle(cards);
+
+    hands.push(cards.slice(0, 10));
+    hands.push(cards.slice(10, 20));
+    hands.push(cards.slice(20, 30));
+    hands.push(cards.slice(30, 40));
+    kitty = cards.slice(40, 43);
+
+    hands[player_id].sort((x, y) => {
+        return x.sorting_value() - y.sorting_value();
+    });
+    hands[player_id].forEach((card) => {
+        var item = document.createElement("ul");
+        item.appendChild(document.createTextNode(card.repr()));
+        document.getElementById("cards").appendChild(item);
+    });
+}
+
+function dealKitty() {
+    if (!kitty.length) return;
+
+    kitty.forEach((card) => {
+        var item = document.createElement("ul");
+        item.appendChild(document.createTextNode(card.repr()));
+        document.getElementById("cards").appendChild(item);
+    });
+
+    kitty = [];  // reset the kitty
+}
+    </script>
+    <h1>500 cards dealer</h1>
+    <div>
+        <label for="seed">The secret code for this round is:</label>
+        <input id="seed"></input>
+    </div>
+    <div>
+        <label for="player-option">I am the player:</label>
+        <select id="player-option">
+            <option></option>
+            <option value=0>Vince</option>
+            <option value=1>Bec</option>
+            <option value=2>Aaron</option>
+            <option value=3>Nathan</option>
+        </select>
+        <button onclick="dealHand()">Deal me the cards</button>
+        <button onclick="dealKitty()">meow</button>
+    </div>
+    <ul id="cards">
+    </ul>
+</body>
+</html>
