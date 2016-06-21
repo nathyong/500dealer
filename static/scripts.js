@@ -34,7 +34,13 @@ function generateCard(card) {
     var inner = document.createElement("div");
     inner.className = 'face';
     inner.onclick = function(event) {
-        inner.className = (inner.className === 'face') ? 'back' : 'face';
+        if (inner.className === 'face') {
+            inner.className = 'back';
+            item.className = 'card';
+        } else {
+            inner.className = 'face';
+            item.className = classes.join(' ');
+        }
     };
     item.appendChild(inner);
     return item;
