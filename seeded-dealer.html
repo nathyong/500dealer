@@ -2,8 +2,18 @@
 <html>
 <head>
     <meta charset="utf-8">
+    <link rel="stylesheet" href="static/fivehundred.scss.css">
+    <style>
+.card {
+    position: relative;
+}
+#cards {
+    padding-top: 100px;
+}
+    </style>
 </head>
 <body>
+    <script src="static/scripts.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/seedrandom/2.4.0/seedrandom.min.js">
     </script>
     <script>
@@ -84,8 +94,7 @@ function dealHand() {
         return x.sorting_value() - y.sorting_value();
     });
     hands[player_id].forEach((card) => {
-        var item = document.createElement("ul");
-        item.appendChild(document.createTextNode(card.repr()));
+        var item = generateCard(card);
         document.getElementById("cards").appendChild(item);
     });
 }
@@ -94,8 +103,7 @@ function dealKitty() {
     if (!kitty.length) return;
 
     kitty.forEach((card) => {
-        var item = document.createElement("ul");
-        item.appendChild(document.createTextNode(card.repr()));
+        var item = generateCard(card);
         document.getElementById("cards").appendChild(item);
     });
 
