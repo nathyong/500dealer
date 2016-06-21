@@ -31,6 +31,11 @@ function generateCard(card) {
     classes.push(getSuit(card.suit));
     classes.push('rank' + getRank(card.value));
     item.className = classes.join(' ');
-    item.innerHTML = '<div class="face"></div';
+    var inner = document.createElement("div");
+    inner.className = 'face';
+    inner.onclick = function(event) {
+        inner.className = (inner.className === 'face') ? 'back' : 'face';
+    };
+    item.appendChild(inner);
     return item;
 }
