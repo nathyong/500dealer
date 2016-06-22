@@ -13,6 +13,25 @@
     </style>
 </head>
 <body>
+    <h1>500 cards dealer</h1>
+    <div>
+        <label for="seed">The secret code for this round is:</label>
+        <input id="seed"></input>
+    </div>
+    <div>
+        <label for="player-option">I am the player:</label>
+        <select id="player-option">
+            <option></option>
+            <option value=0>Vince</option>
+            <option value=1>Bec</option>
+            <option value=2>Aaron</option>
+            <option value=3>Nathan</option>
+        </select>
+        <button onclick="dealHand()">🃋 Deal me the cards</button>
+        <button onclick="dealKitty()">😻 meow</button>
+    </div>
+    <ul id="cards">
+    </ul>
     <script src="static/scripts.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/seedrandom/2.4.0/seedrandom.min.js">
     </script>
@@ -117,25 +136,14 @@ function dealKitty() {
 
     kitty = [];  // reset the kitty
 }
+
+var current_seed = getParameterByName('code');
+if (current_seed) {
+    document.getElementById('seed').value = current_seed;
+} else {
+    window.location.search = 'code=' + Math.random().toString(36).slice(2);
+}
+
     </script>
-    <h1>500 cards dealer</h1>
-    <div>
-        <label for="seed">The secret code for this round is:</label>
-        <input id="seed"></input>
-    </div>
-    <div>
-        <label for="player-option">I am the player:</label>
-        <select id="player-option">
-            <option></option>
-            <option value=0>Vince</option>
-            <option value=1>Bec</option>
-            <option value=2>Aaron</option>
-            <option value=3>Nathan</option>
-        </select>
-        <button onclick="dealHand()">🃋 Deal me the cards</button>
-        <button onclick="dealKitty()">😻 meow</button>
-    </div>
-    <ul id="cards">
-    </ul>
 </body>
 </html>
