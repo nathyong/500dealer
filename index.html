@@ -21,6 +21,7 @@
     <div>
         <label for="seed">The secret code for this round is:</label>
         <input id="seed" />
+        <button onclick="newCode()">🎲New Code</button>
     </div>
     <div>
         <label for="player-option">I am the player:</label>
@@ -141,11 +142,16 @@ function dealKitty() {
     kitty = [];  // reset the kitty
 }
 
+function newCode() {
+    var random_code = Math.random().toString(36).slice(2);
+    window.location.search = 'code=' + random_code;
+}
+
 var current_seed = getParameterByName('code');
 if (current_seed) {
     document.getElementById('seed').value = current_seed;
 } else {
-    window.location.search = 'code=' + Math.random().toString(36).slice(2);
+    newCode();
 }
 
     </script>
